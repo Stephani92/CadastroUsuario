@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Models;
 
-namespace BackEnd.Controllers
+namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -12,9 +13,18 @@ namespace BackEnd.Controllers
     {
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<Eventos>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new Eventos[] {
+                new Eventos(){
+                    EventosId = new Guid(),
+                    Local ="São Paulo",
+                    qtdPessoas = 250,
+                    Lote = "1° Lote ",
+                    Data = DateTime.Now.AddDays(3).ToString("dd/MM/yyyy"),
+                    Tema = "Angular"
+                }
+            };
         }
 
         // GET api/values/5
