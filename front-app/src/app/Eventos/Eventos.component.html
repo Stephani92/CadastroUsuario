@@ -1,3 +1,42 @@
 <p>
   Eventos works!
 </p>
+<form action="" class="">
+  <div class="form-group mb-2">
+    <input class="form-control mr-2">
+    <button class="bnt bnt-outline">Buscar</button>
+  </div>  
+</form>
+<table class="table table-striped">
+    
+    <thead class="thead-dark" >
+      <tr>
+        <th>#Id</th>
+        <th>Tema</th>
+        <th>Img</th>
+        <th>Local</th>
+        <th>Lote</th>
+        <th>QtsPessoa</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="eventos && eventos.length" >
+      <tr *ngFor="let evento of eventos">
+        <td>{{evento.id}}</td>
+        <td>{{evento.tema}}</td>
+        <!--Ñ esta funcionando img-->
+        <td><img src="http://localhost:5000/img/{{evento.imgUrl}}"></td>
+        <td>{{evento.local}}</td>
+        <td>{{evento.lote}}</td>
+        <td>{{evento.qtdPessoas}}</td>
+        <td>{{evento.data}}</td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="!eventos.length">
+      <tr>
+        <td colspan="7" class="texte-center">
+          <h4>Nenhum evento encontrado</h4>
+        </td>
+      </tr>
+    </tfoot>
+</table>

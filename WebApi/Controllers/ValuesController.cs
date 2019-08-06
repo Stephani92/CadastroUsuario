@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Models;
+using Pro.Repository.Data;
+using Pro_Domain.Entities;
 
 namespace WebApi.Controllers
 {
@@ -11,20 +12,17 @@ namespace WebApi.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly ProDbContext _data;
+
+        public ValuesController (ProDbContext data)
+        {
+            _data = data;
+        }
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<Eventos>> Get()
+        public ActionResult<IEnumerable<Evento>> Get()
         {
-            return new Eventos[] {
-                new Eventos(){
-                    EventosId = new Guid(),
-                    Local ="São Paulo",
-                    qtdPessoas = 250,
-                    Lote = "1° Lote ",
-                    Data = DateTime.Now.AddDays(3).ToString("dd/MM/yyyy"),
-                    Tema = "Angular"
-                }
-            };
+           return null;
         }
 
         // GET api/values/5

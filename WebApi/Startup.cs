@@ -11,7 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using WebApi.Data;
+using Pro.Repository;
+using Pro.Repository.Data;
+using Pro.Repository.Repository;
 
 namespace WebApi
 {
@@ -27,7 +29,9 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(x=>x.UseSqlServer(Configuration.GetConnectionString("DefaultConn")));
+            services.AddDbContext<ProDbContext>(x=>x.UseSqlServer(Configuration.GetConnectionString("DefaultConn")));
+            services.AddScoped<IBaseRepository, BaseRepository>();
+            services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -45,6 +49,7 @@ namespace WebApi
             }
 
             //app.UseHttpsRedirection();
+            app.UseCors(x =>x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseMvc();
         }
     }
