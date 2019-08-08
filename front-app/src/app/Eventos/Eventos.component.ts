@@ -10,7 +10,7 @@ import { Evento } from '../_models/evento';
 export class EventosComponent implements OnInit {
 
   eventos: Evento[];
-  even: Evento[];
+  evento: Evento;
   constructor(private eventoService: EventoService) { }
 
   ngOnInit() {
@@ -25,4 +25,23 @@ export class EventosComponent implements OnInit {
       console.log(error);
     });
   }
+
+  getEventosByTema(tema: string) {
+      this.eventoService.getEventoByTema(tema).subscribe(( eventos: Evento[]) => {
+        this.eventos = eventos;
+        console.log(this.eventos);
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getEventosById(id: number) {
+      this.eventoService.getEventoById(id).subscribe(( eventos: Evento) => {
+        this.evento = eventos;
+        console.log(this.evento);
+    }, error => {
+      console.log(error);
+    });
+  }
+
 }

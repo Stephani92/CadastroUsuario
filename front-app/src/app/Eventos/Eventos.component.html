@@ -7,8 +7,7 @@
     <button class="bnt bnt-outline">Buscar</button>
   </div>  
 </form>
-<table class="table table-striped">
-    
+<table class="table table-striped">    
     <thead class="thead-dark" >
       <tr>
         <th>#Id</th>
@@ -20,28 +19,33 @@
         <th>Data</th>
       </tr>
     </thead>
-    // Erro, na tbody/foot so assim funciona mais na aula e pela lógica deveria ser contrário
-    <tbody *ngIf="eventos && !eventos.lenght" >
+    <tbody *ngIf="eventos && eventos.length"> 
       <tr *ngFor="let evento of eventos">
-        <td>{{evento.id}}</td>
-        <td>{{evento.tema}}</td>
-        <!--Ñ esta funcionando img-->
-        <td><img src="http://localhost:5000/img/{{evento.imgUrl}}"></td>
-        <td>{{evento.local}}</td>
-        <td>{{evento.lotes | json}}</td>
-        <td>{{evento.qtdPessoas}}</td>
-        <td>{{evento.data}}</td>
+          <td>{{evento.id}}</td>
+          <td>{{evento.tema}}</td>
+          <!--Ñ esta funcionando img-->
+          <td><img src="http://localhost:5000/img/{{evento.imgUrl}}"></td>
+          <td>{{evento.local}}</td>
+          <td>
+            <div *ngIf="evento.lotes.length">
+            {{evento.lotes[0].nome}}
+            </div>
+            <div *ngIf="!evento.lotes.length">
+              ñ informado
+            </div>
+          </td>
+          <td>{{evento.qtdPessoas}}</td>
+          <td>{{evento.data}}</td>
       </tr>
-    </tbody>
-    // Erro 
-    <tfoot *ngIf="eventos.lenght">
-      <tr>
-        <td colspan="7" class="texte-center">
-          <h4>Nenhum evento encontrado</h4>
-        </td>
-      </tr>
+    </tbody> 
+    <tfoot *ngIf="!eventos.length">
+      <div>
+        <h5>
+          Não encontrado nenhum evento!
+        </h5>
+      </div>
     </tfoot>
+  
 </table>
-<div *ngIf="!eventos.lenght"><div *ngFor="let evento of eventos">
-  tema : {{evento.id}}
-</div></div>
+    <!-- Erro, na tbody/foot so assim funciona mais na aula e pela lógica deveria ser contrário-->
+    
