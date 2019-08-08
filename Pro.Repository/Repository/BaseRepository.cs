@@ -38,7 +38,8 @@ namespace Pro.Repository.Repository
         //Eventos
         public async Task<Evento[]> GetAllEventoAsync(bool includePalestrantes = false)
         {
-            IQueryable<Evento> query = _data.Eventos.Include(c=> c.Lotes).Include(c=> c.RedesSociais);
+            IQueryable<Evento> query = _data.Eventos.Include(c=> c.Lotes)
+            .Include(c=> c.RedesSociais);
             
             if (includePalestrantes)
             {   
@@ -51,7 +52,8 @@ namespace Pro.Repository.Repository
 
         public async Task<Evento[]> GetAllEventoAsyncByTema(string tema, bool includePalestrantes = false)
         {
-            IQueryable<Evento> query = _data.Eventos.Include(c=>c.Lotes)
+            IQueryable<Evento> query = _data.Eventos
+            .Include(c=>c.Lotes)
             .Include(c=>c.RedesSociais);
             if (includePalestrantes)
             {   
@@ -64,7 +66,8 @@ namespace Pro.Repository.Repository
         }
         public async Task<Evento> GetEventoAsyncById(int EventoId, bool includePalestrantes = false)
         {
-            IQueryable<Evento> query = _data.Eventos.Include(c=>c.Lotes)
+            IQueryable<Evento> query = _data.Eventos
+            .Include(c=>c.Lotes)
             .Include(c=>c.RedesSociais);
             if (includePalestrantes)
             {   

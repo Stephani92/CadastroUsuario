@@ -1,5 +1,5 @@
 <p>
-  Eventos works!
+ 
 </p>
 <form action="" class="">
   <div class="form-group mb-2">
@@ -20,19 +20,21 @@
         <th>Data</th>
       </tr>
     </thead>
-    <tbody *ngIf="eventos && eventos.length" >
+    // Erro, na tbody/foot so assim funciona mais na aula e pela lógica deveria ser contrário
+    <tbody *ngIf="eventos && !eventos.lenght" >
       <tr *ngFor="let evento of eventos">
         <td>{{evento.id}}</td>
         <td>{{evento.tema}}</td>
         <!--Ñ esta funcionando img-->
         <td><img src="http://localhost:5000/img/{{evento.imgUrl}}"></td>
         <td>{{evento.local}}</td>
-        <td>{{evento.lote}}</td>
+        <td>{{evento.lotes | json}}</td>
         <td>{{evento.qtdPessoas}}</td>
         <td>{{evento.data}}</td>
       </tr>
     </tbody>
-    <tfoot *ngIf="!eventos.length">
+    // Erro 
+    <tfoot *ngIf="eventos.lenght">
       <tr>
         <td colspan="7" class="texte-center">
           <h4>Nenhum evento encontrado</h4>
@@ -40,3 +42,6 @@
       </tr>
     </tfoot>
 </table>
+<div *ngIf="!eventos.lenght"><div *ngFor="let evento of eventos">
+  tema : {{evento.id}}
+</div></div>
