@@ -17,6 +17,9 @@ export class EventosComponent implements OnInit {
   evento: Evento;
   FiltroLista: '';
   registerForm: FormGroup;
+  test: Evento;
+
+  modolSalvar = '';
 
   constructor(
     private eventoService: EventoService,
@@ -59,6 +62,7 @@ export class EventosComponent implements OnInit {
   }
   // abrir modal
   openModal(template: any) {
+    this.registerForm.reset();
     template.show();
   }
   // validaçao do formulario
@@ -75,11 +79,44 @@ export class EventosComponent implements OnInit {
     });
   }
   // editar evento
-  editEvento(template: any) {
+  editEvento(template: any, evento: Evento) {
+    this.modolSalvar = 'put';
     this.openModal(template);
+    this.evento = evento;
+    this.registerForm.patchValue(evento);
   }
 
-  salvarAlteracoes() {
+  salvarAlteracoes( template: any) {
+    if (this.registerForm.valid) {
+      if (this.modolSalvar === 'put') {
+        this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
+        console.log(this.evento);
+        this.eventoService.putEvento(this.evento).subscribe(
+          (no) => {
+            console.log(no);
+          }, error => {
+            console.log(error);
+          }
+        );
+      } else {
+        this.evento = Object.assign({}, this.registerForm.value);
+        this.eventoService.postEvento(this.evento).subscribe(
+          (novoEvento: Evento) => {
+            console.log(novoEvento);
+            template.hide();
+            this.getEventos();
+          }, error => {
+            console.log(error);
+          }
+        );
+      }
+    }
+    template.hide();
+  }
+  // novo Evento
 
+  novoEvento(template: any) {
+    this.modolSalvar = 'post';
+    this.openModal(template);
   }
 }

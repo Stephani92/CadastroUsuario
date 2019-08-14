@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Get()
         {
            try
-           {    ;
+           {   
                var results = await _repo.GetAllEventoAsync(false);
                return Ok(results);
            }
@@ -75,13 +75,13 @@ namespace WebApi.Controllers
            return BadRequest();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Put(int eventoId,Evento model)
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> Put(Evento model)
         {
            try
            {    
-               var evento = await _repo.GetEventoAsyncById(eventoId, false);
-               if (model == null) return NotFound();
+               var evento = await _repo.GetEventoAsyncById(model.Id, false);
+               if (evento == null) return NotFound();
                _repo.Update(model);
                if (await _repo.SaveChangesAsync())
                {
