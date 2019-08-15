@@ -15,7 +15,7 @@ namespace Pro.Repository.Repository
             _data = data;
         }
 
-        //geral
+            //geral
         public void Add<T>(T entity) where T : class
         {
             _data.Add(entity);
@@ -32,7 +32,7 @@ namespace Pro.Repository.Repository
 
         public void Update<T>(T entity) where T : class
         {
-            _data.Update(entity);
+            _data.Attach<T>(entity).State = EntityState.Modified;
         }
 
         //Eventos

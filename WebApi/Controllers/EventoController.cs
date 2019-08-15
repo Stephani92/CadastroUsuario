@@ -76,16 +76,13 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{Id}")]
-        public async Task<IActionResult> Put(Evento model)
+        public async Task<IActionResult> Put(int id,Evento model)
         {
            try
-           {    
-               var evento = await _repo.GetEventoAsyncById(model.Id, false);
-               if (evento == null) return NotFound();
-               _repo.Update(model);
+           {  _repo.Update(model);
                if (await _repo.SaveChangesAsync())
                {
-                   return Created($"/api/evento/{model.Id}", model);   
+                   return Created($"/api/evento/{id}", model);   
                }
            }
            catch (System.Exception)
@@ -95,12 +92,13 @@ namespace WebApi.Controllers
            return BadRequest();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int eventoId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
            try
            {    
-               var evento = await _repo.GetEventoAsyncById(eventoId, false);
+               var evento = await _repo.GetEventoAsyncById(id, false);
+
                if (evento == null) return NotFound();
                _repo.Delete(evento);
                if (await _repo.SaveChangesAsync())

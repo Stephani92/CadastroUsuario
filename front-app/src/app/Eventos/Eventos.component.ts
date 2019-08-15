@@ -20,6 +20,8 @@ export class EventosComponent implements OnInit {
   test: Evento;
 
   modolSalvar = '';
+  bodyDeletarEvento = '';
+
 
   constructor(
     private eventoService: EventoService,
@@ -86,14 +88,31 @@ export class EventosComponent implements OnInit {
     this.registerForm.patchValue(evento);
   }
 
-  salvarAlteracoes( template: any) {
+  excluirEvento(evento: Evento, template: any) {
+    this.openModal(template);
+    this.evento = evento;
+    this.bodyDeletarEvento = `Tem certeza que deseja excluir o Evento: ${evento.tema}, Código: ${evento.id}`;
+  }
+
+  confirmeDelete() {
+    console.log(this.evento);
+    this.eventoService.deleteEvento(this.evento).subscribe(
+      () => {
+        this.getEventos();
+      }, error => {
+        console.log(error);
+      }
+    );
+  }
+
+  salvarAlteracoes(template: any) {
     if (this.registerForm.valid) {
       if (this.modolSalvar === 'put') {
         this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
         console.log(this.evento);
         this.eventoService.putEvento(this.evento).subscribe(
-          (no) => {
-            console.log(no);
+          () => {
+            this.getEventos();
           }, error => {
             console.log(error);
           }
@@ -111,7 +130,6 @@ export class EventosComponent implements OnInit {
         );
       }
     }
-    template.hide();
   }
   // novo Evento
 
