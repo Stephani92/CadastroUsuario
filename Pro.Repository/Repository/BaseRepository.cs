@@ -13,6 +13,7 @@ namespace Pro.Repository.Repository
         public BaseRepository(ProDbContext data)
         {
             _data = data;
+            _data.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
             //geral
@@ -32,7 +33,7 @@ namespace Pro.Repository.Repository
 
         public void Update<T>(T entity) where T : class
         {
-            _data.Attach<T>(entity).State = EntityState.Modified;
+            _data.Update<T>(entity);
         }
 
         //Eventos
@@ -60,7 +61,7 @@ namespace Pro.Repository.Repository
                 query = query.Include(pe=> pe.EventoPalestrantes)
                 .ThenInclude(p=>p.Palestrante);
             }
-            query = query.OrderByDescending(c=>c.Data)
+            query = query.OrderBy(c=>c.Id)
                         .Where(c=>c.Tema.ToLower().Contains(tema.ToLower()));
             return await query.ToArrayAsync();
         }
@@ -74,7 +75,7 @@ namespace Pro.Repository.Repository
                 query = query.Include(pe=> pe.EventoPalestrantes)
                 .ThenInclude(p=>p.Palestrante);
             }
-            query = query.OrderByDescending(c=>c.Data)
+            query = query.OrderBy(c=>c.Id)
                         .Where(c=> c.Id == EventoId);
             return await query.FirstOrDefaultAsync();
         }

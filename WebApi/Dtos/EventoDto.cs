@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 
-namespace Pro_Domain.Entities
+namespace WebApi.Dtos
 {
-    public class Evento
+    public class EventoDto
     {
-        
         public int Id { get; set; }
         public string Tema { get; set; }
         public string Data { get; set; }    
@@ -14,9 +12,8 @@ namespace Pro_Domain.Entities
         public int qtdPessoas { get; set; }
         public string Local { get; set; }
         public string ImgUrl { get; set; }
-        
-        public List<Lote> Lotes { get; set;}
-        public List<RedeSocial> RedesSociais { get; set; }
-        public List<EventoPalestrante> EventoPalestrantes { get; set; }
+        public List<LoteDto> Lotes { get; set;}
+        public List<RedeSocialDto> RedesSociais { get; set; }
+        public List<PalestranteDto> Palestrantes { get; set; }
     }
 }
