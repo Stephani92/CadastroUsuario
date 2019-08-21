@@ -1,16 +1,18 @@
 <div class="d-flex">
   <div class="form-inline mr-auto">
     <div class="form-group mb-2">
-      <label class="mr-2">Filtro:</label> <input type="text" class="form-control mr-2" placeholder="buscar"
+      <label class="mr-2">Filtro:</label> <input type="text" class="form-control mr-2" placeholder="Encontre pelo tema"
         [(ngModel)]="FiltroLista">
     </div>
+    <h3>Filtro: {{FiltroLista}}</h3>
   </div>
+  
 </div>
 <!--Novo Evento-->
 <button type="button" class="btn btn-outline-primary " (click)="novoEvento(template)">
   <i class="fas fa-plus-circle"> Novo Evento</i>
 </button>
-<h3>Filtro: {{FiltroLista}}</h3>
+
 
 
 <br><br>
@@ -33,7 +35,9 @@
           <td>{{evento.id}}</td>
           <td>{{evento.tema}}</td>
           <!--Ñ esta funcionando img-->
-          <td><img src="http://localhost:5000/img/{{evento.imgUrl}}"></td>
+          <td ><img src="http://localhost:5000/img/{{evento.imgUrl}}" 
+            [style.width.px]="imagemAltura"
+            [style.margin.px]="imagemMargem"></td>
           <td>{{evento.local}}</td>
           <td>
             <div >
@@ -43,8 +47,9 @@
               ñ informado
             </div>
           </td>
+          
           <td>{{evento.qtdPessoas}}</td>
-          <td>{{evento.data}}</td>
+          <td>{{evento.data | DateTimeFormatPipe }}</td>
           <td>
             <div class="btn-group">
               <button  class="btn btn-success" (click)="editEvento(template, evento) " tooltip="Editar">
@@ -57,7 +62,7 @@
           </td>
       </tr>
     </tbody> 
-    <tfoot *ngIf="!eventos.length">
+    <tfoot *ngIf="!eventos">
       <div>
         <h5>
           Não encontrado nenhum evento!
@@ -103,7 +108,7 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="">Data e Hora</label>
-                  <input type="text" class="form-control" bsDatepicker [bsConfig]="{dateInputFormat: 'DD/MM/YYYY hh:mm a'}" [ngClass]="{
+                  <input type="text" class="form-control" bsDatepicker value="{{data | DateTimeFormatPipe }}" [(ngModel)]="data" [bsConfig]="{dateInputFormat: 'DD/MM/YYYY hh:mm a'}" [ngClass]="{
                     'is-invalid': registerForm.get('data').errors && registerForm.get('data').touched 
                   }" formControlName="data">
                   <div *ngIf="registerForm.get('data').hasError('required') && registerForm.get('data').touched"  class="invalid-feedback">
