@@ -20,38 +20,11 @@ export class EventosComponent implements OnInit {
   evento: Evento;
   registerForm: FormGroup;
   test: Evento;
+  mostrarImagem = true;
+  file: File;
 
   modolSalvar = '';
   bodyDeletarEvento = '';
-
-  // Filtro
-        /** filtroLista1: string;
-        eventosFiltrados: any = [];
-        get filtroLista(): string {
-          return this.filtroLista1;
-        }
-        set filtroLista(value: string) {
-          this.filtroLista1 = value;
-          if (this.filtroLista1 == null) {
-            this.eventosFiltrados = this.eventos;
-          } else {
-            this.FiltrarEventos(this.filtroLista);
-          }
-        }
-        FiltrarEventos(filtraPor: string): any {
-          if (filtraPor == null) {
-            return this.eventos.filter(
-              evento => evento.tema.toLocaleLowerCase().indexOf(filtraPor) !== -1
-            );
-          } else {
-            filtraPor = filtraPor.toLocaleLowerCase();
-          }
-          return this.eventos.filter(
-            evento => evento.tema.toLocaleLowerCase().indexOf(filtraPor) !== -1
-          );
-        } */
-
-
 
   constructor(
     private eventoService: EventoService,
@@ -65,6 +38,16 @@ export class EventosComponent implements OnInit {
   ngOnInit() {
     this.getEventos();
     this.validation();
+  }
+  mostrarImag() {
+    this.mostrarImagem = !this.mostrarImagem;
+  }
+  onFileChange(evento) {
+    const reader = new FileReader();
+    if (evento.target.files && evento.target.files.length) {
+      this.file = evento.target.files;
+      console.log(this.file);
+    }
   }
 
   // eventos
@@ -120,7 +103,8 @@ export class EventosComponent implements OnInit {
   editEvento(template: any, evento: Evento) {
     this.modolSalvar = 'put';
     this.openModal(template);
-    this.evento = evento;
+    this.evento = Object.assign({}, evento);
+    this.evento.imgUrl = '';
     this.registerForm.patchValue(evento);
   }
   // excluir evento
@@ -141,12 +125,17 @@ export class EventosComponent implements OnInit {
       }
     );
   }
-
+  UploadImg() {
+    this.eventoService.postUpload(this.file).subscribe();
+    const nomeArquivo = this.evento.imgUrl.split('\\', 3);
+    this.evento.imgUrl = nomeArquivo[2];
+  }
   // salvar e alterar Evento
   salvarAlteracoes(template: any) {
     if (this.registerForm.valid) {
       if (this.modolSalvar === 'put') {
         this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
+        this.UploadImg();
         this.eventoService.putEvento(this.evento).subscribe(
           () => {
             this.toastrService.success('Evento alterado com sucesso', 'Sucesso');
@@ -157,10 +146,10 @@ export class EventosComponent implements OnInit {
         );
       } else {
         this.evento = Object.assign({}, this.registerForm.value);
+        this.UploadImg();
         this.eventoService.postEvento(this.evento).subscribe(
           () => {
             this.toastrService.success('Evento cadastrado com sucesso', 'Sucesso');
-            template.hide();
             this.getEventos();
           }, error => {
             this.toastrService.error(`Erro ao cadastrar ${error}`);

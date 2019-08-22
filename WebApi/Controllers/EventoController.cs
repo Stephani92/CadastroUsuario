@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Pro.Repository.Repository;
 using Pro_Domain.Entities;
 using WebApi.Dtos;
+using System.Net.Http.Headers;
 
 namespace WebApi.Controllers
 {
@@ -29,6 +31,31 @@ namespace WebApi.Controllers
                var eventos = await _repo.GetAllEventoAsync(false);
                var results = _mapper.Map<IEnumerable<EventoDto>>(eventos);
                return Ok(results);
+           }
+           catch (System.Exception ex)
+           {
+               return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco falhou {ex.Message}");
+           }
+        }
+
+        // upload
+        [HttpPost("upload")]
+        public async Task<IActionResult> Upload()
+        {
+           try
+           {   
+               var file = Request.Form.Files[0];
+               var folderName =  Path.Combine("wwwroot", "Images");
+               var pathSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+               if (file.Length > 0)
+               {
+                   var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
+                   var fullPath = Path.Combine(pathSave, fileName.Replace("\"", " ").Trim());
+                   using(var stream = new FileStream(fullPath, FileMode.Create)) {
+                     file.CopyTo(stream);
+                   }
+               }
+               return Ok();
            }
            catch (System.Exception ex)
            {

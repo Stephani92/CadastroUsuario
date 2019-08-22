@@ -20,9 +20,11 @@
 <table class="table table-striped">    
     <thead class="thead-dark" >
       <tr>
+        <th>
+          <button class="btn btn-outline-primary" (click)="mostrarImag()">Mostrar Imagem</button>
+        </th>        
         <th>#Id</th>
-        <th>Tema</th>
-        <th>Img</th>
+        <th>Tema</th>        
         <th>Local</th>
         <th>Lote</th>
         <th>QtsPessoa</th>
@@ -32,12 +34,11 @@
     </thead>
     <tbody *ngIf="eventos && eventos.length"> 
       <tr *ngFor="let evento of eventos">
-          <td>{{evento.id}}</td>
-          <td>{{evento.tema}}</td>
-          <!--Ñ esta funcionando img-->
-          <td ><img src="http://localhost:5000/img/{{evento.imgUrl}}" 
+        <td ><img *ngIf="mostrarImagem" src="http://localhost:5000/images/{{evento.imgUrl}}" 
             [style.width.px]="imagemAltura"
             [style.margin.px]="imagemMargem"></td>
+          <td>{{evento.id}}</td>
+          <td>{{evento.tema}}</td>
           <td>{{evento.local}}</td>
           <td>
             <div >
@@ -132,9 +133,10 @@
               <div class="form-row">
                 <div class="form-group col-md-7">
                   <label for="">Imagem</label>
-                  <input type="text" class="form-control" [ngClass]="{
+                  <button class="btn btn-success" (click)="file.click()">Escolher arquivo</button>
+                  <input type="file" #file class="form-control" [ngClass]="{
                     'is-invalid': registerForm.get('imgUrl').errors && registerForm.get('imgUrl').touched 
-                  }" formControlName="imgUrl">
+                  }" (change)="onFileChange($event)" formControlName="imgUrl" style ="display: none">
                   <div *ngIf="registerForm.get('imgUrl').hasError('required') && registerForm.get('imgUrl').touched"  class="invalid-feedback">
                     imgUrl é obrigatório.
                   </div>
