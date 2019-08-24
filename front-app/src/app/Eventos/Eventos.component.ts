@@ -46,7 +46,6 @@ export class EventosComponent implements OnInit {
     const reader = new FileReader();
     if (evento.target.files && evento.target.files.length) {
       this.file = evento.target.files;
-      console.log(this.file);
     }
   }
 
@@ -64,7 +63,6 @@ export class EventosComponent implements OnInit {
   getEventosByTema(tema: string) {
       this.eventoService.getEventoByTema(tema).subscribe(( eventos: Evento[]) => {
         this.eventos = eventos;
-        console.log(this.eventos);
     }, error => {
       this.toastrService.error(`Erro ao cadastrar ${error}`);
     });

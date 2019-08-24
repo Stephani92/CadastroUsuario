@@ -8,11 +8,13 @@ using Pro.Repository.Repository;
 using Pro_Domain.Entities;
 using WebApi.Dtos;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class EventoController : ControllerBase
     {
         private readonly IBaseRepository _repo;
@@ -24,6 +26,7 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
            try
@@ -52,7 +55,7 @@ namespace WebApi.Controllers
                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
                    var fullPath = Path.Combine(pathSave, fileName.Replace("\"", " ").Trim());
                    using(var stream = new FileStream(fullPath, FileMode.Create)) {
-                     file.CopyTo(stream);
+                      await file.CopyToAsync(stream);
                    }
                }
                return Ok();

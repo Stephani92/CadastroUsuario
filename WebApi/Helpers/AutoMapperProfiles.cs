@@ -1,6 +1,7 @@
 using System.Linq;
 using AutoMapper;
 using Pro_Domain.Entities;
+using Pro_Domain.Identity;
 using WebApi.Dtos;
 
 namespace WebApi.Helpers
@@ -21,6 +22,8 @@ namespace WebApi.Helpers
             ).ReverseMap();
             CreateMap<Lote, LoteDto>().ReverseMap();
             CreateMap<RedeSocial, RedeSocialDto>().ReverseMap();
+            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, UserLoginDto>().ReverseMap();
         }
     }
 }
