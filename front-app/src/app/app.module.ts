@@ -9,8 +9,14 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EventosComponent } from './eventos/Eventos.component';
+import { UserComponent } from './user/user.component';
+import { LoginComponent } from './user/login/login.component';
+import { RegistrationComponent } from './user/registration/registration.component';
+import { NavComponent } from './nav/nav.component'
+
 import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
 import { ModalModule, TooltipModule, BsDropdownModule, BsDatepickerModule } from 'ngx-bootstrap';
+
 
 
 
@@ -18,6 +24,10 @@ import { ModalModule, TooltipModule, BsDropdownModule, BsDatepickerModule } from
    declarations: [
       AppComponent,
       EventosComponent,
+      UserComponent,
+      RegistrationComponent,
+      LoginComponent,
+      NavComponent,
       DateTimeFormatPipePipe
    ],
    imports: [
@@ -26,7 +36,11 @@ import { ModalModule, TooltipModule, BsDropdownModule, BsDatepickerModule } from
       BsDatepickerModule.forRoot(),
       TooltipModule.forRoot(),
       ModalModule.forRoot(),
-      ToastrModule.forRoot(),
+      ToastrModule.forRoot({
+         timeOut: 3000,
+         preventDuplicates: true,
+         progressBar: true
+      }),
       BrowserAnimationsModule,
       AppRoutingModule,
       HttpClientModule,
