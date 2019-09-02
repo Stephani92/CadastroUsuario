@@ -10,14 +10,14 @@ import { UserLogin } from '../_models/UserLogin';
 })
 export class AuthService {
 
-  baserUrl = 'http://localhost:5000/api/User/';
+  baserUrl = 'http://localhost:5000/api/user/';
   decodedToken: any;
   jwtHelper = new JwtHelperService();
 
   constructor(private http: HttpClient) { }
 
   login(model: any) {
-    return this.http.post(`${this.baserUrl}Login`, model).pipe(map((resp: any) => {
+    return this.http.post(`${this.baserUrl}login`, model).pipe(map((resp: any) => {
       const user = resp;
       if (user) {
         localStorage.setItem('token', user.token);
@@ -26,7 +26,7 @@ export class AuthService {
     }));
   }
   register(model: User) {
-    return this.http.post(`${this.baserUrl}Register`, model);
+    return this.http.post(`${this.baserUrl}register`, model);
   }
 
   loggeIn() {

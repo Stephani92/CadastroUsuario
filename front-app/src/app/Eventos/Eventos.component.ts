@@ -102,8 +102,7 @@ export class EventosComponent implements OnInit {
     this.modolSalvar = 'put';
     this.openModal(template);
     this.evento = Object.assign({}, evento);
-    this.evento.imgUrl = '';
-    this.registerForm.patchValue(evento);
+    this.registerForm.patchValue(this.evento);
   }
   // excluir evento
   excluirEvento(evento: Evento, template: any) {
@@ -124,9 +123,9 @@ export class EventosComponent implements OnInit {
     );
   }
   UploadImg() {
-    this.eventoService.postUpload(this.file).subscribe();
     const nomeArquivo = this.evento.imgUrl.split('\\', 3);
     this.evento.imgUrl = nomeArquivo[2];
+    this.eventoService.postUpload(this.file, nomeArquivo[2]).subscribe();
   }
   // salvar e alterar Evento
   salvarAlteracoes(template: any) {

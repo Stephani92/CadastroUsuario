@@ -12,7 +12,9 @@ import { EventosComponent } from './eventos/Eventos.component';
 import { UserComponent } from './user/user.component';
 import { LoginComponent } from './user/login/login.component';
 import { RegistrationComponent } from './user/registration/registration.component';
-import { NavComponent } from './nav/nav.component'
+import { NavComponent } from './nav/nav.component';
+import { PalestrantesComponent } from './palestrantes/palestrantes.component';
+
 
 import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
 import { ModalModule, TooltipModule, BsDropdownModule, BsDatepickerModule } from 'ngx-bootstrap';
@@ -28,6 +30,7 @@ import { ModalModule, TooltipModule, BsDropdownModule, BsDatepickerModule } from
       RegistrationComponent,
       LoginComponent,
       NavComponent,
+      PalestrantesComponent,
       DateTimeFormatPipePipe
    ],
    imports: [

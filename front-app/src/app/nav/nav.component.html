@@ -6,7 +6,7 @@
   <div *ngIf="loggeIn()" class="collapse navbar-collapse" id="navbarCollapse">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item " routerLinkActive="active-link" >
-        <a class="nav-link"  routerLink='home'>Home<span class="sr-only">(current)</span></a>
+        <a class="nav-link"  routerLink='home'>Home</a>
       </li>
       
       <li class="nav-item" routerLinkActive="active-link">
@@ -17,13 +17,13 @@
       </li>
     </ul>    
   </div>
-  <ul class="navbar-nav ml-auto">
+  <ul *ngIf="loggeIn()" class="navbar-nav ml-auto">
     <li class="nav-item dropdown" dropdown>
-      <a dropdownToggle class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stephani</a>
+      <a dropdownToggle class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stephani</a>
       <div *dropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-        <a class="dropdown-item" href="#">Perfil</a>
+        <a class="dropdown-item" >Perfil</a>
         <div role="separator" class="divider">
-          <a class="dropdown-item" href="#">Sair</a>
+          <a class="dropdown-item" (click)="logOut()" >Sair</a>
         </div>
       </div>
     </li>

@@ -48,7 +48,7 @@ namespace WebApi.Controllers
            try
            {   
                var file = Request.Form.Files[0];
-               var folderName =  Path.Combine("wwwroot", "Images");
+               var folderName =  Path.Combine("Resources", "Images");
                var pathSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                if (file.Length > 0)
                {
