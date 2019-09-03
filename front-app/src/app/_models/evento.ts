@@ -4,7 +4,9 @@ import { Palestrante } from './palestrante';
 import { Lote } from './lote';
 
 
-export interface Evento {
+export class Evento {
+
+    constructor() { }
     id: number;
     tema: string;
     data: Data;

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { EventoService } from '../_services/evento.service';
 import { Evento } from '../_models/evento';
 import { defineLocale, BsLocaleService, ptBrLocale } from 'ngx-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -26,11 +27,11 @@ export class EventosComponent implements OnInit {
   modolSalvar = '';
   bodyDeletarEvento = '';
 
-  constructor(
-    private eventoService: EventoService,
-    private fb: FormBuilder,
-    private localeService: BsLocaleService,
-    private toastrService: ToastrService
+  constructor(public router: Router,
+              private eventoService: EventoService,
+              private fb: FormBuilder,
+              private localeService: BsLocaleService,
+              private toastrService: ToastrService
     ) {
         this.localeService.use('pt-br');
      }

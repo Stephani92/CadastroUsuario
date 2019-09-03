@@ -1,5 +1,3 @@
-
-
 export interface Lote {
     id: number;
     nome: string;

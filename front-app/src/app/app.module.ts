@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { ToastrModule } from 'ngx-toastr';
 
@@ -14,10 +14,14 @@ import { LoginComponent } from './user/login/login.component';
 import { RegistrationComponent } from './user/registration/registration.component';
 import { NavComponent } from './nav/nav.component';
 import { PalestrantesComponent } from './palestrantes/palestrantes.component';
-
+import { EventoEditComponent } from './eventos/eventoEdit/eventoEdit.component';
 
 import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
 import { ModalModule, TooltipModule, BsDropdownModule, BsDatepickerModule } from 'ngx-bootstrap';
+import { TabsModule } from 'ngx-bootstrap';
+import {NgxMaskModule} from 'ngx-mask';
+import { AuthInterceptor } from './auth/auth.interceptor';
+
 
 
 
@@ -26,6 +30,7 @@ import { ModalModule, TooltipModule, BsDropdownModule, BsDatepickerModule } from
    declarations: [
       AppComponent,
       EventosComponent,
+      EventoEditComponent,
       UserComponent,
       RegistrationComponent,
       LoginComponent,
@@ -44,13 +49,21 @@ import { ModalModule, TooltipModule, BsDropdownModule, BsDatepickerModule } from
          preventDuplicates: true,
          progressBar: true
       }),
+      TabsModule.forRoot(),
+      NgxMaskModule.forRoot(),
       BrowserAnimationsModule,
       AppRoutingModule,
       HttpClientModule,
       FormsModule,
       ReactiveFormsModule
    ],
-   providers: [],
+   providers: [
+      {
+         provide: HTTP_INTERCEPTORS,
+         useClass: AuthInterceptor,
+         multi: true
+      }
+   ],
    bootstrap: [
       AppComponent
    ]
