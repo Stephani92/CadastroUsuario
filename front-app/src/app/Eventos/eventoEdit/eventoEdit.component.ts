@@ -17,6 +17,10 @@ export class EventoEditComponent implements OnInit {
   registerForm: FormGroup;
   evento: Evento = new Evento();
   imagemURL = 'assets/img/images.png';
+  fileNameToUpdate: string;
+  dataAtual: string;
+  file: File;
+
   constructor(public router: ActivatedRoute,
               private eventoService: EventoService,
               private fb: FormBuilder,
@@ -36,9 +40,19 @@ export class EventoEditComponent implements OnInit {
     this.eventoService.getEventoById(idEvento).subscribe(
       (event: Evento) => {
         this.evento = Object.assign({}, event);
+        this.fileNameToUpdate = event.imgUrl.toString();
+
+        this.imagemURL = `http://localhost:5000/resources/images/${this.evento.imgUrl}?_ts=${this.dataAtual}`;
         this.evento.imgUrl = '';
-        console.log(this.evento);
-        console.log(event);
+
+        this.registerForm.patchValue(this.evento);
+
+        this.evento.lotes.forEach(lote => {
+          this.lotes.push(this.criaLote(lote));
+        });
+        this.evento.redesSociais.forEach(rs => {
+          this.lotes.push(this.criaLote(rs));
+        });
       }
     );
   }
@@ -47,12 +61,12 @@ export class EventoEditComponent implements OnInit {
       tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
       local: ['', Validators.required],
       data: ['', Validators.required],
-      imgUrl: ['', Validators.required],
+      imgUrl: [''],
       qtdPessoas: ['', [Validators.required, Validators.max(800)]],
       telefone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      lotes: this.fb.array([this.criaLote()]),
-      redesSociais: this.fb.array([this.criaRedeSoacial()])
+      lotes: this.fb.array([]),
+      redesSociais: this.fb.array([])
     });
   }
   // lotes
@@ -64,10 +78,10 @@ export class EventoEditComponent implements OnInit {
     return this.registerForm.get('redesSociais') as FormArray;
   }
   adicionarLotes() {
-    this.lotes.push(this.criaLote());
+    this.lotes.push(this.criaLote({id: 0}));
   }
   adicionarRedesSociais() {
-    this.redesSociais.push(this.criaRedeSoacial());
+    this.redesSociais.push(this.criaRedeSoacial({id: 0}));
   }
   removerLotes(id: number) {
     this.lotes.removeAt(id);
@@ -76,25 +90,53 @@ export class EventoEditComponent implements OnInit {
   removerRedesSociais(id: number) {
     this.redesSociais.removeAt(id);
   }
-  criaRedeSoacial(): FormGroup {
+  criaRedeSoacial(rs: any): FormGroup {
     return this.fb.group({
-      nome: ['', Validators.required],
-      url: ['', Validators.required]
+      id: [rs.id],
+      nome: [rs.nome, Validators.required],
+      url: [rs.url, Validators.required]
     });
   }
-  criaLote(): FormGroup {
+  criaLote(lote: any): FormGroup {
     return this.fb.group({
-      nome: ['', Validators.required],
-      quantidade: ['', Validators.required],
-      preco: ['', Validators.required],
-      dataInicio: [''],
-      dataFim: ['']
+      id: [lote.id],
+      nome: [lote.nome, Validators.required],
+      quantidade: [lote.quantidade, Validators.required],
+      preco: [lote.preco, Validators.required],
+      dataInicio: [lote.dataInicio],
+      dataFim: [lote.dataFim]
     });
   }
-  onFileChange(file: FileList) {
+  onFileChange(evento: any, file: FileList) {
     const reader = new FileReader();
     reader.onload = (event: any) => this.imagemURL = event.target.result;
+    this.file = evento.target.files;
     reader.readAsDataURL(file[0]);
   }
+
+  UploadImg() {
+    console.log(this.evento.imgUrl);
+    this.eventoService.postUpload(this.file, this.fileNameToUpdate).subscribe(
+      () => {
+      this.dataAtual = new Date().getMilliseconds().toString();
+      this.imagemURL = `http://localhost:5000/resources/images/${this.evento.imgUrl}?_ts=${this.dataAtual}`;
+      });
+  }
+
+  salvarEvento() {
+      this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
+      this.evento.imgUrl = this.fileNameToUpdate;
+      if (this.registerForm.get('imgUrl').value !== '') {
+        this.UploadImg();
+      }
+      this.eventoService.putEvento(this.evento).subscribe(
+        () => {
+          this.toastrService.success('Evento alterado com sucesso', 'Sucesso');
+        }, error => {
+          this.toastrService.error(`Erro ao editar ${error}`);
+        }
+      );
+  }
+
 
 }

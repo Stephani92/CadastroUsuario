@@ -48,16 +48,7 @@
                   </div>
                   <!--Imagem telefone-->
                   <div class="form-row">
-                    <div class="form-group col-md-7">
-                      <label for="">Imagem</label>
-                      <button class="btn btn-success" (click)="file.click()">Escolher arquivo</button>
-                      <input type="file" #file class="form-control" [ngClass]="{
-                        'is-invalid': registerForm.get('imgUrl').errors && registerForm.get('imgUrl').touched 
-                      }" (change)="onFileChange($event)" formControlName="imgUrl" style ="display: none" [(ngModel)]="evento.imgUrl">
-                      <div *ngIf="registerForm.get('imgUrl').hasError('required') && registerForm.get('imgUrl').touched"  class="invalid-feedback">
-                        imgUrl é obrigatório.
-                      </div>
-                    </div>
+                    
                     <div class="form-group col-md-5">
                       <label for="">Telefone</label>
                       <input type="text" class="form-control" [ngClass]="{
@@ -94,34 +85,45 @@
             </tab>
             <tab heading="Lotes">
               <div>
-                <div formArrayName="lotes" *ngFor="let lote of lotes.controls; let i=index">
-                  <fieldset [formGroupName]="i" class="form-group">
+                <div formArrayName="lotes" *ngFor="let lote of lotes.controls; let j=index">
+                  <fieldset [formGroupName]="j" class="form-group">
                     <legend class="d-flex justify-content-between capitalize">
-                      {{'Lotes'}}
-                      <button class="btn btn-sm btn-warning mb-1" (click)="removerLotes(i)">remove</button>
+                      {{lotes.get(j+'.nome').value === '' ?
+                        'Lotes' :
+                        lotes.get(j+'.nome').value?.replace('fab fa-', '')
+                    }}
+                      <button class="btn btn-sm btn-warning mb-1" (click)="removerLotes(j)">remove</button>
                     </legend>
                     <div class="row">
                       <div class="form-group col-md-4">
                         <label>Nome</label>
-                        <input type="text" class="form-control" formcontrolname="nome" placeholder="Lote">
+                        <input type="text" class="form-control" formControlName="nome" [ngClass]="{
+                    'is-invalid': lotes.get(j+'.nome').errors && lotes.get(j+'.nome').touched 
+                  }" placeholder="Lote">
                       </div>
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-3">
                         <label>Quantidade</label>
-                        <input type="text" class="form-control" formcontrolname="quantidade" placeholder="000">
-                      </div>
-                      <div class="form-group col-md-4">
-                        <label>Preço</label>
-                        <input type="text" formcontrolname="preco" placeholder="R$ 0,00">
-                      </div>
-                      <div class="form-group col-md-4">
-                        <label>Data Início</label>
-                        <input type="text" class="form-control" formcontrolname="dataInicio" placeholder="01/01/2019">
-                      </div>
-                      <div class="form-group col-md-4">
-                        <label>Data Fim</label>
-                        <input type="text" class="form-control" formcontrolname="dataFim" placeholder="01/01/2019">
-                      </div>
+                        <input type="text" class="form-control" formControlName="quantidade" [ngClass]="{
+                    'is-invalid': lotes.get(j+'.quantidade').errors && lotes.get(j+'.quantidade').touched 
+                  }" placeholder="000">
+                      </div>                     
                       
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label>Data Início</label>
+                            <input type="text" class="form-control" formControlName="dataInicio"  placeholder="01/01/2019">
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Data Fim</label>
+                            <input type="text" class="form-control" formControlName="dataFim"  placeholder="01/01/2019">
+                          </div>
+                        <div class="form-group col-md-3">
+                            <label>Preço</label>
+                            <input type="text" class="form-control" formControlName="preco" [ngClass]="{
+                        'is-invalid': lotes.get(j+'.preco').errors && lotes.get(j+'.preco').touched 
+                      }" placeholder="R$ 0,00">
+                          </div>
                     </div>
                   </fieldset>
                 </div>
@@ -131,15 +133,21 @@
               </div>
             </tab>
             <tab heading="Redes Sociais">
-                <div formArrayName="redesSociais" *ngFor="let lote of redesSociais.controls; let i=index">
+                <div formArrayName="redesSociais" *ngFor="let redeSocial of redesSociais.controls; let i=index">
                   <fieldset [formGroupName]="i" class="form-group">
                   <legend class="d-flex justify-content-between capitalize">
+                    {{redesSociais.get(i+'.nome').value === '' ?
+                        'Redes Sociais' :
+                        redesSociais.get(i+'.nome').value?.replace('fab fa-', '')
+                    }}
                     <button class="btn btn-sm btn-warning mb-1" (click)="removerRedesSociais(i)">remove</button>
                   </legend>
                   <div class="row">
                     <div class="form-group col-md-4">
                       <label>Nome</label>
-                      <select class="form-control" formcontrolname="nome">
+                      <select class="form-control" formControlName="nome" [ngClass]="{
+                        'is-invalid': redesSociais.get(i+'.nome').errors && redesSociais.get(i+'.nome').touched 
+                      }">
                         <option value="">Selecione</option>
                         <option value="fab fa-youtube">Youtube</option>
                         <option value="fab fa-instagram">Instagram</option>
@@ -156,7 +164,9 @@
                     </div>
                     <div class="form-group col-md-4">
                       <label>Link</label>
-                      <input type="text" formcontrolname="url" class="form-control" placeholder="URL">
+                      <input type="text" formControlName="url"  [ngClass]="{
+                        'is-invalid': redesSociais.get(i+'.url').errors && redesSociais.get(i+'.url').touched 
+                      }"class="form-control" placeholder="URL">
                     </div>
                   </div>
                 </fieldset>
@@ -165,13 +175,20 @@
                 Adicionar Rede Social
               </button>
             </tab>
-          </tabset> 
+          </tabset>
+          <div class="row">
+            <div class="col-md-12 d-flex justify-content-end">
+              <!-- {{registerForm.value | json}} -->
+              <button [disabled]="!registerForm.valid" class="btn btn-success my-2" (click)="salvarEvento()">Salvar
+                Alterações</button>
+            </div>
+          </div> 
           
         </div>
         <div class="col-md-4 ml-auto">
             <div class="form-row">
               <div class="form-group col-md-9">
-                <input type="file" #file="" (change)="onFileChange($event.target.files)" class="form-control is-invalid" formcontrolname="imagemURL" placeholder="" style="display: none">
+                <input type="file" #file (change)="onFileChange($event, $event.target.files)" class="form-control is-invalid" formControlName="imgUrl" placeholder="" style="display: none">
               </div>
             </div>
             <div class="card profile-card-3">

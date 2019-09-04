@@ -23,6 +23,8 @@ export class EventosComponent implements OnInit {
   test: Evento;
   mostrarImagem = true;
   file: File;
+  filiNameToUpdate: string;
+  dataAtual: string;
 
   modolSalvar = '';
   bodyDeletarEvento = '';
@@ -52,9 +54,10 @@ export class EventosComponent implements OnInit {
 
   // eventos
   getEventos() {
-      this.eventoService.getAllEvento().subscribe(( eventos: Evento[]) => {
-        this.eventos = eventos;
-        console.log(this.eventos);
+    this.dataAtual = new Date().getMilliseconds().toString();
+    this.eventoService.getAllEvento().subscribe(( eventos: Evento[]) => {
+      this.eventos = eventos;
+      console.log(this.eventos);
     }, error => {
       this.toastrService.error(`Erro ao cadastrar ${error}`);
     });
@@ -103,6 +106,8 @@ export class EventosComponent implements OnInit {
     this.modolSalvar = 'put';
     this.openModal(template);
     this.evento = Object.assign({}, evento);
+    this.filiNameToUpdate = evento.imgUrl.toString();
+    this.evento.imgUrl = '';
     this.registerForm.patchValue(this.evento);
   }
   // excluir evento
@@ -124,9 +129,24 @@ export class EventosComponent implements OnInit {
     );
   }
   UploadImg() {
-    const nomeArquivo = this.evento.imgUrl.split('\\', 3);
-    this.evento.imgUrl = nomeArquivo[2];
-    this.eventoService.postUpload(this.file, nomeArquivo[2]).subscribe();
+    if (this.modolSalvar === 'put') {
+      this.evento.imgUrl = this.filiNameToUpdate;
+      this.eventoService.postUpload(this.file, this.evento.imgUrl).subscribe(
+        () => {
+        this.dataAtual = new Date().getMilliseconds().toString();
+        this.getEventos();
+        }
+      );
+    } else {
+      const nomeArquivo = this.evento.imgUrl.split('\\', 3);
+      this.evento.imgUrl = nomeArquivo[2];
+      this.eventoService.postUpload(this.file, nomeArquivo[2]).subscribe(
+        () => {
+        this.dataAtual = new Date() .getMilliseconds().toString();
+        this.getEventos();
+        }
+      );
+    }
   }
   // salvar e alterar Evento
   salvarAlteracoes(template: any) {
