@@ -51,7 +51,7 @@ export class EventoEditComponent implements OnInit {
           this.lotes.push(this.criaLote(lote));
         });
         this.evento.redesSociais.forEach(rs => {
-          this.lotes.push(this.criaLote(rs));
+          this.redesSociais.push(this.criaRedeSoacial(rs));
         });
       }
     );

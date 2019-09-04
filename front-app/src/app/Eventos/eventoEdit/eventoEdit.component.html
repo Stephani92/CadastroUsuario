@@ -95,13 +95,13 @@
                       <button class="btn btn-sm btn-warning mb-1" (click)="removerLotes(j)">remove</button>
                     </legend>
                     <div class="row">
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-5">
                         <label>Nome</label>
                         <input type="text" class="form-control" formControlName="nome" [ngClass]="{
                     'is-invalid': lotes.get(j+'.nome').errors && lotes.get(j+'.nome').touched 
                   }" placeholder="Lote">
                       </div>
-                      <div class="form-group col-md-3">
+                      <div class="form-group col-md-5">
                         <label>Quantidade</label>
                         <input type="text" class="form-control" formControlName="quantidade" [ngClass]="{
                     'is-invalid': lotes.get(j+'.quantidade').errors && lotes.get(j+'.quantidade').touched 
@@ -110,20 +110,22 @@
                       
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-4">
+                      <div class="form-group col-md-9">
+                        <label>Preço</label>
+                        <input type="text" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align: 'left' }" class="form-control" formControlName="preco" [ngClass]="{
+                    'is-invalid': lotes.get(j+'.preco').errors && lotes.get(j+'.preco').touched 
+                  }" placeholder="R$ 0,00">
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-5">
                             <label>Data Início</label>
                             <input type="text" class="form-control" formControlName="dataInicio"  placeholder="01/01/2019">
                           </div>
-                          <div class="form-group col-md-4">
+                          <div class="form-group col-md-5">
                             <label>Data Fim</label>
                             <input type="text" class="form-control" formControlName="dataFim"  placeholder="01/01/2019">
-                          </div>
-                        <div class="form-group col-md-3">
-                            <label>Preço</label>
-                            <input type="text" class="form-control" formControlName="preco" [ngClass]="{
-                        'is-invalid': lotes.get(j+'.preco').errors && lotes.get(j+'.preco').touched 
-                      }" placeholder="R$ 0,00">
-                          </div>
+                          </div>                                                  
                     </div>
                   </fieldset>
                 </div>
@@ -162,9 +164,9 @@
                         <option value="fab fa-vimeo">Vimeo</option>
                       </select>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-8">
                       <label>Link</label>
-                      <input type="text" formControlName="url"  [ngClass]="{
+                      <input type="text" formControlName="url" prefix="http://" mask="" [ngClass]="{
                         'is-invalid': redesSociais.get(i+'.url').errors && redesSociais.get(i+'.url').touched 
                       }"class="form-control" placeholder="URL">
                     </div>
@@ -215,8 +217,9 @@
                 </p>
                 <div class="row">
                   <div class="icon-block col-md-8 iconesSociais">
-                    <a class="mr-3" target="_blank">
-                      <i class="fab fa-youtube"></i>
+                    <a class="mr-3" *ngFor="let rede of redesSociais.controls; let l=index" 
+                    href="{{redesSociais.get(l+'.url').value}}" target="_blank">
+                      <i class="{{redesSociais.get(l+'.nome').value}}"></i>
                     </a>
                   </div>
                   <!--div class="col-md-4 d-flex justify-content-center">  

@@ -26,6 +26,10 @@ namespace Pro.Repository.Repository
         {
             _data.Remove(entity);
         }
+        public void DeleteRange<T>(T[] entityArray) where T : class
+        {
+            _data.RemoveRange(entityArray);
+        }
         public async Task<bool> SaveChangesAsync()
         {
             return (await _data.SaveChangesAsync())>0;

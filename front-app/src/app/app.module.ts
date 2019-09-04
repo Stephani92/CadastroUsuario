@@ -19,7 +19,8 @@ import { EventoEditComponent } from './eventos/eventoEdit/eventoEdit.component';
 import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
 import { ModalModule, TooltipModule, BsDropdownModule, BsDatepickerModule } from 'ngx-bootstrap';
 import { TabsModule } from 'ngx-bootstrap';
-import {NgxMaskModule} from 'ngx-mask';
+import { NgxMaskModule } from 'ngx-mask';
+import { NgxCurrencyModule } from "ngx-currency";
 import { AuthInterceptor } from './auth/auth.interceptor';
 
 
@@ -51,6 +52,7 @@ import { AuthInterceptor } from './auth/auth.interceptor';
       }),
       TabsModule.forRoot(),
       NgxMaskModule.forRoot(),
+      NgxCurrencyModule,
       BrowserAnimationsModule,
       AppRoutingModule,
       HttpClientModule,

@@ -9,6 +9,7 @@ using Pro_Domain.Entities;
 using WebApi.Dtos;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq;
 
 namespace WebApi.Controllers
 {
@@ -120,12 +121,31 @@ namespace WebApi.Controllers
            {   
                var evento = await _repo.GetEventoAsyncById(id, true);
                if (evento == null) return NotFound();
-               _mapper.Map(model, evento);               
-               _repo.Update(evento);
-               if (await _repo.SaveChangesAsync())
-               {
-                   return Created($"/api/evento/{id}", _mapper.Map<EventoDto>(evento));   
-               }
+
+               var idLotes = new List<int>();
+               var idRedes = new List<int>();
+                
+                model.Lotes.ForEach(lote => idLotes.Add(lote.Id));               
+                model.RedesSociais.ForEach(rede => idRedes.Add(rede.Id));
+               
+
+               var lotes = evento.Lotes.Where(
+                   lote => !idLotes.Contains(lote.Id))
+                                    .ToArray<Lote>();
+
+               var redes = evento.RedesSociais.Where(
+                   rede => !idRedes.Contains(rede.Id))
+                                    .ToArray<RedeSocial>();
+               
+
+                if (idLotes.Count > 0)  _repo.DeleteRange(lotes);                
+                if (idRedes.Count > 0)  _repo.DeleteRange(redes);
+                
+                _mapper.Map(model, evento);               
+                _repo.Update(evento);   
+                if (await _repo.SaveChangesAsync()) {
+                    return Created($"/api/evento/{id}", _mapper.Map<EventoDto>(evento));   
+                }
            }
            catch (System.Exception ex)
            {
