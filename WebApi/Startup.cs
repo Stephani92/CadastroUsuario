@@ -26,6 +26,7 @@ using Pro.Repository.Data;
 using Pro.Repository.Repository;
 using Pro_Domain.Entities;
 using Pro_Domain.Identity;
+using WebApi.Models;
 
 namespace WebApi
 {
@@ -50,13 +51,15 @@ namespace WebApi
                 options.Password.RequireLowercase = false; 
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 4;
-            });
+            })
+                .AddRoles<Role>()
+                .AddEntityFrameworkStores<ProDbContext>()
+                .AddRoleValidator<RoleValidator<Role>>()
+                .AddRoleManager<RoleManager<Role>>()
+                .AddSignInManager<SignInManager<User>>();
 
             builder = new IdentityBuilder(builder.UserType, typeof(Role), builder.Services);
-            builder.AddEntityFrameworkStores<ProDbContext>();
-            builder.AddRoleValidator<RoleValidator<Role>>();
-            builder.AddRoleManager<RoleManager<Role>>();
-            builder.AddSignInManager<SignInManager<User>>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => 
                     {
@@ -86,7 +89,7 @@ namespace WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<Role> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -107,6 +110,7 @@ namespace WebApi
                 RequestPath = new PathString("/Resources") 
             });
 
+            
             app.UseMvc();
         }
     }

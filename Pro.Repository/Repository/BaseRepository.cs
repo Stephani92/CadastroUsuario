@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -96,6 +98,13 @@ namespace Pro.Repository.Repository
             query = query.Where(c=> c.Nome.ToLower().Contains(name.ToLower()));
             return await query.ToArrayAsync();
         }
+        public async Task<Job> GetAllJobAsyncById(int custId, int userId)
+        {
+            IQueryable<Job> query = _data.Jobs;
+            
+            query = query.Where(c=> c.CustomerId == custId && c.UserId == userId);
+            return await query.FirstOrDefaultAsync();
+        }
 
         
 
@@ -113,6 +122,20 @@ namespace Pro.Repository.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        
+        public async Task<Customer> GetCustomerAsyncById(int CustId)
+        {
+            IQueryable<Customer> query = _data.Customers;           
+            query = query.Where(c => c.Id == CustId);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Job[]> GetJobsAsyncByUser(int CustId)
+        {
+            IQueryable<Job> query = _data.Jobs;
+            query = query.Where(c => c.UserId.Equals(CustId));
+            
+            return await query.ToArrayAsync();
+
+        }
     }
 }

@@ -20,8 +20,11 @@ import { DateTimeFormatPipePipe } from './_helps/DateTimeFormatPipe.pipe';
 import { ModalModule, TooltipModule, BsDropdownModule, BsDatepickerModule } from 'ngx-bootstrap';
 import { TabsModule } from 'ngx-bootstrap';
 import { NgxMaskModule } from 'ngx-mask';
-import { NgxCurrencyModule } from "ngx-currency";
+import { NgxCurrencyModule } from 'ngx-currency';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { JobComponent } from './Job/Job/Job.component';
+import { HomeComponent } from './home/home.component';
+import { LogoComponent } from './logo/logo.component';
 
 
 
@@ -37,7 +40,10 @@ import { AuthInterceptor } from './auth/auth.interceptor';
       LoginComponent,
       NavComponent,
       PalestrantesComponent,
-      DateTimeFormatPipePipe
+      DateTimeFormatPipePipe,
+      JobComponent,
+      HomeComponent,
+      LogoComponent
    ],
    imports: [
       BrowserModule,

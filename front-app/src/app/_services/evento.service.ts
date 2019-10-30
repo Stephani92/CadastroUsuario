@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Evento } from '../_models/evento';
+import { IntDto } from '../_models/Dtos/IntDto';
+import { Job } from '../_models/Job';
 
 
 @Injectable({
@@ -27,7 +29,7 @@ export class EventoService {
   postEvento(evento: Evento) {
     return this.http.post(this.baseURL, evento);
   }
-
+  
   postUpload(file: File, name: string) {
     const fileToUpload = file[0] as File;
     const formData = new FormData();

@@ -1,6 +1,3 @@
-
-
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +18,9 @@ namespace Pro.Repository.Data
         public DbSet<Lote> Lotes { get; set; }
         public DbSet<RedeSocial> RedeSociais { get; set; }
         public DbSet<EventoPalestrante> EventoPalestrantes { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Job> Jobs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder){
 
             base.OnModelCreating(modelBuilder);
@@ -37,6 +37,12 @@ namespace Pro.Repository.Data
             .HasKey(PE => new {
                 PE.EventoId, PE.PalestranteId
             });
+            modelBuilder.Entity<Job>(ops => 
+                {   
+                    ops.HasOne(c=> c.Customer).WithMany(c => c.Jobs).HasForeignKey(c => c.CustomerId).IsRequired();
+                    ops.HasOne(c=> c.User).WithMany(c => c.Jobs).HasForeignKey(c => c.UserId).IsRequired();
+                }
+            );
         }
 
 

@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Pro.Repository.Repository;
+using Pro_Domain.Entities;
 using Pro_Domain.Identity;
 using WebApi.Dtos;
 
@@ -26,15 +28,18 @@ namespace WebApi.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
 
+        private readonly IBaseRepository _repo;
         public UserController(IConfiguration conf,
                                 UserManager<User> userManager,
                                 SignInManager<User> signInManager,
-                                IMapper mapper)
+                                IMapper mapper,
+                                IBaseRepository repo)
         {
             _conf = conf;
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
+            _repo = repo;
         }
 
         [HttpGet("GetUser")]
@@ -65,8 +70,103 @@ namespace WebApi.Controllers
            }
         }
 
+        [HttpPost("addjob")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AddJob(JobDto job){
+            try
+            {   
+                var customer = await _repo.GetCustomerAsyncById(job.CustomerId);
+                var User = await _userManager.FindByIdAsync(job.UserId);
+                if(customer == null & User == null) NotFound();
+                var resul = new Job(){
+                    Hours = job.Hours,
+                    Description = job.Description,
+                    CustomerId = customer.Id,
+                    UserId= User.Id
+                };
+                _repo.Add(resul);
+                if (await _repo.SaveChangesAsync())
+                {
+                    return Created($"/api/user/{resul.CustomerId}", _mapper.Map<JobDto>(resul));   
+                }
+            }
+            catch (System.Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco falhou {ex.Message}");
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("getjobid")]
+        [AllowAnonymous]
+        public async Task<IActionResult> getjob(UC teste){
+            try
+                {   var result = await _repo.GetAllJobAsyncById(teste.CustomerId, teste.UserId);
+                    if (result == null)NotFound();
+                    
+                    return Ok(result);   
+                    
+                }
+                catch (System.Exception ex)
+                {
+                    return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco falhou {ex.Message}");
+                }
+        }
+        [HttpGet("getjobUser/{x}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> getjobByUser(int x){
+            try
+                {   var result = await  _repo.GetJobsAsyncByUser(x);
+                    if (result == null)NotFound();
+                    
+                    return Ok(result);   
+                    
+                }
+                catch (System.Exception ex)
+                {
+                    return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco falhou {ex.Message}");
+                }
+        }
+        [HttpPost("getalljob")]
+        [AllowAnonymous]
+        public async Task<IActionResult> getAllJob(UC teste){
+            try
+                {   
+                    var result = await _repo.GetAllJobAsyncById(teste.CustomerId, teste.UserId);
+                    if (result == null)NotFound();
+                    
+                    return Ok(result);   
+                    
+                }
+                catch (System.Exception ex)
+                {
+                    return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco falhou {ex.Message}");
+                }
+        }
+
+
+        [HttpPost("addcust")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Addcust(){
+        try
+           {   
+                var result = new Customer();
+               _repo.Add(result);
+               if (await _repo.SaveChangesAsync())
+               {
+                   return Created($"/api/User/{result.Id}", _mapper.Map<CustDto>(result));   
+               }
+           }
+           catch (System.Exception ex)
+           {
+               return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco falhou {ex.Message}");
+           }
+           return BadRequest();
+        }
+
         [HttpPost("Login")]
         [AllowAnonymous]
+        
          
          public async Task<IActionResult> Login(UserLoginDto userLogin) {
              try

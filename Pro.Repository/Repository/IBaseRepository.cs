@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Pro_Domain.Entities;
 
@@ -15,9 +16,13 @@ namespace Pro.Repository.Repository
         Task<Evento[]> GetAllEventoAsyncByTema(string tema, bool includePalestrantes);
         Task<Evento[]> GetAllEventoAsync(bool includePalestrantes);
         Task<Evento> GetEventoAsyncById(int EventoId, bool includePalestrantes);
+        Task<Customer> GetCustomerAsyncById(int CustId);
+        Task<Job> GetAllJobAsyncById(int x, int z);
 
         //PALESTRANTE
         Task<Palestrante[]> GetAllPalestrantesAsyncByName(string name, bool includeEventos);
+        Task<Job[]> GetJobsAsyncByUser(int name);
+
         Task<Palestrante> GetAllPalestranteByIdAsync(int PalestranteId, bool includeEventos);
     }
 }

@@ -8,6 +8,7 @@ import { RegistrationComponent } from './user/registration/registration.componen
 import { AuthGuard } from './auth/auth.guard';
 import { PalestrantesComponent } from './palestrantes/palestrantes.component';
 import { EventoEditComponent } from './eventos/eventoEdit/eventoEdit.component';
+import { HomeComponent } from './home/home.component';
 
 
 const routes: Routes = [
@@ -18,9 +19,9 @@ const routes: Routes = [
   ]},
   {path: 'eventos', component: EventosComponent, canActivate: [AuthGuard]},
   {path: 'evento/:id/edit', component: EventoEditComponent, canActivate: [AuthGuard]},
-  {path: 'home', component: PalestrantesComponent, canActivate: [AuthGuard]},
-  {path: '', component: AppComponent},
-  {path: '**', component: AppComponent}
+  {path: 'home', component: HomeComponent},
+  {path: '', component: HomeComponent},
+  {path: '**', component: HomeComponent}
 ];
 
 @NgModule({

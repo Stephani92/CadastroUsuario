@@ -1,5 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'variables';
 @import '../node_modules/bootstrap/scss/bootstrap';
-@import '../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css'
- 
+@import '../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css';
+
+
+body{
+    background-image: url(waterColor.png);
+    background-size: cover;
+    background-attachment: fixed ;
+    background-repeat: no-repeat;
+    background-color: cornflowerblue;  
+    z-index:0;  
+}

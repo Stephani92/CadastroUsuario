@@ -1,31 +1,43 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <a class="navbar-brand" href="#">Fixed navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div *ngIf="loggeIn()" class="collapse navbar-collapse" id="navbarCollapse">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item " routerLinkActive="active-link" >
-        <a class="nav-link"  routerLink='home'>Home</a>
-      </li>
-      
-      <li class="nav-item" routerLinkActive="active-link">
-        <a class="nav-link" routerLink="eventos">Eventos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled"  tabindex="-1" aria-disabled="true">Disabled</a>
-      </li>
-    </ul>    
-  </div>
-  <ul *ngIf="loggeIn()" class="navbar-nav ml-auto">
-    <li class="nav-item dropdown" dropdown>
-      <a dropdownToggle class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer; text-transform: capitalize; ">{{userName()}}</a>
-      <div *dropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-        <a class="dropdown-item" >Perfil</a>
-        <div role="separator" class="divider">
-          <a class="dropdown-item" (click)="logOut()" >Sair</a>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark nav">
+    <a class="navbar-brand" href="#">Fixed navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div *ngIf="loggeIn()" class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item " routerLinkActive="active-link" >
+          <a class="nav-link"  routerLink='home'>Home</a>
+        </li>
+        
+        <li class="nav-item" routerLinkActive="active-link">
+          <a class="nav-link" routerLink="eventos">Eventos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled"  tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>    
+    </div>
+    <ul *ngIf="!loggeIn()" class="navbar-nav ml-auto">
+      <div class="btn-group">
+          <button  routerLink='user/registration' class="btn btn-primary sm-2" >
+              <i class="">Log In</i>
+          </button>
+          <button [routerLink]="['user/login']" class="btn btn-secondary sm-2 ">
+            <i class="">Log up</i>
+          </button>
         </div>
-      </div>
-    </li>
-  </ul>
-</nav> 
+    </ul>
+    <ul *ngIf="loggeIn()" class="navbar-nav ml-auto">
+      <li class="nav-item dropdown" dropdown>
+        <a dropdownToggle class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer; text-transform: capitalize; ">{{userName()}}</a>
+        <div *dropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" >Perfil</a>
+          <div role="separator" class="divider">
+            <a class="dropdown-item" (click)="logOut()" >Sair</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  
+

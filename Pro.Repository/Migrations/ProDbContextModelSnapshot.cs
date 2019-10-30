@@ -89,6 +89,17 @@ namespace Pro.Repository.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Pro_Domain.Entities.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customers");
+                });
+
             modelBuilder.Entity("Pro_Domain.Entities.Evento", b =>
                 {
                     b.Property<int>("Id")
@@ -125,6 +136,29 @@ namespace Pro.Repository.Migrations
                     b.HasIndex("PalestranteId");
 
                     b.ToTable("EventoPalestrantes");
+                });
+
+            modelBuilder.Entity("Pro_Domain.Entities.Job", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CustomerId");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("Hours");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Jobs");
                 });
 
             modelBuilder.Entity("Pro_Domain.Entities.Lote", b =>
@@ -196,7 +230,7 @@ namespace Pro.Repository.Migrations
                     b.ToTable("RedeSociais");
                 });
 
-            modelBuilder.Entity("Pro_Domain.Entities.Role", b =>
+            modelBuilder.Entity("Pro_Domain.Identity.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -291,7 +325,7 @@ namespace Pro.Repository.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("Pro_Domain.Entities.Role")
+                    b.HasOne("Pro_Domain.Identity.Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -334,6 +368,19 @@ namespace Pro.Repository.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Pro_Domain.Entities.Job", b =>
+                {
+                    b.HasOne("Pro_Domain.Entities.Customer", "Customer")
+                        .WithMany("Jobs")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Pro_Domain.Identity.User", "User")
+                        .WithMany("Jobs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Pro_Domain.Entities.Lote", b =>
                 {
                     b.HasOne("Pro_Domain.Entities.Evento")
@@ -355,7 +402,7 @@ namespace Pro.Repository.Migrations
 
             modelBuilder.Entity("Pro_Domain.Identity.UserRole", b =>
                 {
-                    b.HasOne("Pro_Domain.Entities.Role", "Role")
+                    b.HasOne("Pro_Domain.Identity.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
